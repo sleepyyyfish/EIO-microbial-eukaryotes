@@ -1,0 +1,75 @@
+# Network analysis workflow
+
+## 1. Data preparation
+   - Aggregate ASV abundance by treatment
+   - Convert abundance table into relative abundance
+   - Filter ASVs occurring in ≥30% samples (adjust the threshold until nodes number is appropriate)
+
+## 2. Network construction
+   - Construct microbial co-occurrence networks
+   - Generate node and edge tables (|r| threshold can be adjusted in R script `03_nodes_edges_r0.6.R` )
+
+## 3. Network visualization
+   - Import networks into Gephi
+   - Visualize topology and taxonomic distribution
+
+## 4. Network topology analysis and identification of key taxa
+   - Calculate degree and betweenness
+   - Identify ecological roles using Zi-Pi analysis
+   - Estimate niche breadth
+
+**Zi-Pi**
+- Within-module connectivity (Zi) 
+reflects the importance of a node within its own module.
+   High Zi → core members of a module
+   Low Zi → peripheral members
+- Among-module connectivity (Pi) 
+reflects the ability of a node to connect different modules.
+   High Pi → connector taxa
+   Low Pi → taxa mainly restricted to one module
+- Network hubs：Zi > 2.5 , Pi > 0.62
+- Module hubs：Zi > 2.5 , Pi ≤ 0.62
+- Connectors：Zi ≤ 2.5 , Pi > 0.62
+- Peripherals：others
+
+**degree_betweenness**
+Is there a positive relation between degree & betweenness 
+(high degree nodes=?=high betweennness nodes)
+
+**Niche breadth** was calculated to evaluate the ecological niche characteristics of ASVs across different treatments. 
+- ASVs with broader niche breadth may represent generalist taxa that can adapt to a wider range of environmental conditions, 
+- whereas taxa with narrower niche breadth may show more specialized ecological preferences.
+
+## 5. Network stability assessment
+   - Stimulate fragmentation
+   - Evaluate robustness and vulnerability
+
+- 1.**Fragmentation**
+
+Fragmentation evaluates network integrity after removal of important nodes.
+
+- Nodes with the highest betweenness were sequentially removed
+- Network fragmentation was calculated to assess the loss of connectivity
+
+Higher fragmentation indicates a more vulnerable network structure.
+
+
+- 2.**Robustness**
+
+Robustness evaluates resistance to random or targeted species loss.
+
+Two removal strategies were applied:
+
+- **Random removal**
+    - Randomly remove 50% of nodes
+    - Evaluates overall network resistance
+
+- **Targeted removal**
+    - Remove highly connected nodes (highest degree)
+    - Evaluates dependence on network hubs
+
+
+- 3.**Vulnerability**
+
+Vulnerability was quantified as the maximum decrease in network efficiency caused by the sequential removal of individual nodes, reflecting the dependence of network functioning on specific taxa. 
+
